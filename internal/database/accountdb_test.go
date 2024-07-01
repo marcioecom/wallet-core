@@ -42,7 +42,7 @@ func (s *AccountDBTestSuite) TestSave() {
 	s.Nil(err)
 }
 
-func (s *AccountDBTestSuite) TestGet() {
+func (s *AccountDBTestSuite) TestFindByID() {
 	s.db.Exec(
 		"INSERT INTO clients (id, name, email, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
 		s.client.ID, s.client.Name, s.client.Email, s.client.CreatedAt, s.client.UpdatedAt,
