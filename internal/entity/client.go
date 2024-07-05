@@ -8,12 +8,12 @@ import (
 )
 
 type Client struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
+	ID        string
+	Name      string
+	Email     string
 	Accounts  []*Account
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func NewClient(name, email string) (*Client, error) {

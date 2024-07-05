@@ -8,11 +8,11 @@ import (
 )
 
 type Account struct {
-	ID        string `json:"id"`
+	ID        string
 	Client    *Client
-	Balance   float64   `json:"balance"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Balance   float64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func NewAccount(client *Client) (*Account, error) {

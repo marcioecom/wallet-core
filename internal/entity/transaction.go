@@ -8,11 +8,11 @@ import (
 )
 
 type Transaction struct {
-	ID          string `json:"id"`
+	ID          string
 	AccountFrom *Account
 	AccountTo   *Account
-	Amount      float64   `json:"amount"`
-	CreatedAt   time.Time `json:"createdAt"`
+	Amount      float64
+	CreatedAt   time.Time
 }
 
 func NewTransaction(accountFrom, accountTo *Account, amount float64) (*Transaction, error) {
