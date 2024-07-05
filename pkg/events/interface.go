@@ -6,6 +6,7 @@ type EventInterface[T any] interface {
 	GetName() string
 	GetDateTime() time.Time
 	GetPayload() T
+	SetPayload(payload T)
 }
 
 type EventHandlerInterface[T any] interface {

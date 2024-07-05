@@ -3,6 +3,7 @@ package createtransaction
 import (
 	"github.com/marcioecom/wallet-core/internal/entity"
 	"github.com/marcioecom/wallet-core/internal/gateway"
+	"github.com/marcioecom/wallet-core/pkg/events"
 )
 
 type CreateTransactionInputDTO struct {
@@ -18,12 +19,21 @@ type CreateTransactionOutputDTO struct {
 type CreateTransactionUseCase struct {
 	AccountGateway     gateway.AccountGateway
 	TransactionGateway gateway.TransactionGateway
+	EventDispatcher    events.EventDispatcher[*CreateTransactionOutputDTO]
+	TransactionCreated events.EventInterface[*CreateTransactionOutputDTO]
 }
 
-func NewCreateTransactionUseCase(t gateway.TransactionGateway, a gateway.AccountGateway) *CreateTransactionUseCase {
+func NewCreateTransactionUseCase(
+	transactionGateway gateway.TransactionGateway,
+	accountGateway gateway.AccountGateway,
+	eventDispatcher events.EventDispatcher[*CreateTransactionOutputDTO],
+	transactionCreated events.EventInterface[*CreateTransactionOutputDTO],
+) *CreateTransactionUseCase {
 	return &CreateTransactionUseCase{
-		AccountGateway:     a,
-		TransactionGateway: t,
+		AccountGateway:     accountGateway,
+		TransactionGateway: transactionGateway,
+		EventDispatcher:    eventDispatcher,
+		TransactionCreated: transactionCreated,
 	}
 }
 
@@ -47,7 +57,12 @@ func (c *CreateTransactionUseCase) Execute(input CreateTransactionInputDTO) (*Cr
 		return nil, err
 	}
 
-	return &CreateTransactionOutputDTO{
+	output := &CreateTransactionOutputDTO{
 		ID: transaction.ID,
-	}, nil
+	}
+
+	c.TransactionCreated.SetPayload(output)
+	c.EventDispatcher.Dispatch(c.TransactionCreated)
+
+	return output, nil
 }

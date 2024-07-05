@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/marcioecom/wallet-core/internal/entity"
+	"github.com/marcioecom/wallet-core/internal/event"
+	"github.com/marcioecom/wallet-core/pkg/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -56,7 +58,10 @@ func TestCreateTransactionUseCase_Execute(t *testing.T) {
 		Amount:        100,
 	}
 
-	usecase := NewCreateTransactionUseCase(tm, am)
+	event := event.NewTransactionCreated[*CreateTransactionOutputDTO]()
+	dispatcher := events.NewEventDispatcher[*CreateTransactionOutputDTO]()
+
+	usecase := NewCreateTransactionUseCase(tm, am, dispatcher, event)
 	output, err := usecase.Execute(input)
 	assert.Nil(t, err)
 	assert.NotNil(t, output)

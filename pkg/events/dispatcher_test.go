@@ -21,6 +21,10 @@ func (e *TestEvent[T]) GetPayload() T {
 	return e.payload
 }
 
+func (e *TestEvent[T]) SetPayload(payload T) {
+	e.payload = payload
+}
+
 func (e *TestEvent[T]) GetDateTime() time.Time {
 	return time.Now()
 }
