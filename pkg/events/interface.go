@@ -2,21 +2,21 @@ package events
 
 import "time"
 
-type EventInterface[T any] interface {
+type EventInterface interface {
 	GetName() string
 	GetDateTime() time.Time
-	GetPayload() T
-	SetPayload(payload T)
+	GetPayload() any
+	SetPayload(payload any)
 }
 
-type EventHandlerInterface[T any] interface {
-	Handle(event EventInterface[T])
+type EventHandlerInterface interface {
+	Handle(event EventInterface)
 }
 
-type EventDispatcher[T any] interface {
-	Register(eventName string, handler EventHandlerInterface[T]) error
-	Dispatch(event EventInterface[T]) error
-	Remove(eventName string, handler EventHandlerInterface[T]) error
-	Has(eventName string, handler EventHandlerInterface[T]) bool
+type EventDispatcher interface {
+	Register(eventName string, handler EventHandlerInterface) error
+	Dispatch(event EventInterface) error
+	Remove(eventName string, handler EventHandlerInterface) error
+	Has(eventName string, handler EventHandlerInterface) bool
 	Clear()
 }

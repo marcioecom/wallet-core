@@ -7,17 +7,17 @@ import (
 
 var ErrHandlerAlreadyRegistered = errors.New("handler already registered")
 
-type Dispatcher[T any] struct {
-	handlers map[string][]EventHandlerInterface[T]
+type Dispatcher struct {
+	handlers map[string][]EventHandlerInterface
 }
 
-func NewEventDispatcher[T any]() *Dispatcher[T] {
-	return &Dispatcher[T]{
-		handlers: make(map[string][]EventHandlerInterface[T]),
+func NewEventDispatcher() *Dispatcher {
+	return &Dispatcher{
+		handlers: make(map[string][]EventHandlerInterface),
 	}
 }
 
-func (d *Dispatcher[T]) Register(eventName string, handler EventHandlerInterface[T]) error {
+func (d *Dispatcher) Register(eventName string, handler EventHandlerInterface) error {
 	if d.Has(eventName, handler) {
 		return ErrHandlerAlreadyRegistered
 	}
@@ -26,7 +26,7 @@ func (d *Dispatcher[T]) Register(eventName string, handler EventHandlerInterface
 	return nil
 }
 
-func (d *Dispatcher[T]) Dispatch(event EventInterface[T]) error {
+func (d *Dispatcher) Dispatch(event EventInterface) error {
 	var wg sync.WaitGroup
 
 	if handlers, ok := d.handlers[event.GetName()]; ok {
@@ -44,7 +44,7 @@ func (d *Dispatcher[T]) Dispatch(event EventInterface[T]) error {
 	return nil
 }
 
-func (d *Dispatcher[T]) Remove(eventName string, handler EventHandlerInterface[T]) error {
+func (d *Dispatcher) Remove(eventName string, handler EventHandlerInterface) error {
 	if handlers, ok := d.handlers[eventName]; ok {
 		for i, h := range handlers {
 			if h == handler {
@@ -56,7 +56,7 @@ func (d *Dispatcher[T]) Remove(eventName string, handler EventHandlerInterface[T
 	return nil
 }
 
-func (d *Dispatcher[T]) Has(eventName string, handler EventHandlerInterface[T]) bool {
+func (d *Dispatcher) Has(eventName string, handler EventHandlerInterface) bool {
 	if handlers, ok := d.handlers[eventName]; ok {
 		for _, h := range handlers {
 			if h == handler {
@@ -68,6 +68,6 @@ func (d *Dispatcher[T]) Has(eventName string, handler EventHandlerInterface[T]) 
 	return false
 }
 
-func (d *Dispatcher[T]) Clear() {
-	d.handlers = make(map[string][]EventHandlerInterface[T])
+func (d *Dispatcher) Clear() {
+	d.handlers = make(map[string][]EventHandlerInterface)
 }

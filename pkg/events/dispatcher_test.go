@@ -8,49 +8,49 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type TestEvent[T any] struct {
+type TestEvent struct {
 	name    string
-	payload T
+	payload any
 }
 
-func (e *TestEvent[T]) GetName() string {
+func (e *TestEvent) GetName() string {
 	return e.name
 }
 
-func (e *TestEvent[T]) GetPayload() T {
+func (e *TestEvent) GetPayload() any {
 	return e.payload
 }
 
-func (e *TestEvent[T]) SetPayload(payload T) {
+func (e *TestEvent) SetPayload(payload any) {
 	e.payload = payload
 }
 
-func (e *TestEvent[T]) GetDateTime() time.Time {
+func (e *TestEvent) GetDateTime() time.Time {
 	return time.Now()
 }
 
-type EventHandlerMock[T any] struct {
+type EventHandlerMock struct {
 	mock.Mock
 }
 
-func (m *EventHandlerMock[T]) Handle(event EventInterface[T]) {
+func (m *EventHandlerMock) Handle(event EventInterface) {
 	m.Called(event)
 }
 
-type TestEventHandler[T any] struct {
+type TestEventHandler struct {
 	id uint
 }
 
-func (m *TestEventHandler[T]) Handle(event EventInterface[T]) {}
+func (m *TestEventHandler) Handle(event EventInterface) {}
 
 type EventDispatcherTestSuite struct {
 	suite.Suite
-	event      *TestEvent[string]
-	event2     *TestEvent[string]
-	handler    *TestEventHandler[string]
-	handler2   *TestEventHandler[string]
-	handler3   *TestEventHandler[string]
-	dispatcher *Dispatcher[string]
+	event      *TestEvent
+	event2     *TestEvent
+	handler    *TestEventHandler
+	handler2   *TestEventHandler
+	handler3   *TestEventHandler
+	dispatcher *Dispatcher
 }
 
 func TestSuite(t *testing.T) {
@@ -58,12 +58,12 @@ func TestSuite(t *testing.T) {
 }
 
 func (s *EventDispatcherTestSuite) SetupTest() {
-	s.dispatcher = NewEventDispatcher[string]()
-	s.handler = &TestEventHandler[string]{id: 1}
-	s.handler2 = &TestEventHandler[string]{id: 2}
-	s.handler3 = &TestEventHandler[string]{id: 3}
-	s.event = &TestEvent[string]{name: "event", payload: "event"}
-	s.event2 = &TestEvent[string]{name: "event2", payload: "event2"}
+	s.dispatcher = NewEventDispatcher()
+	s.handler = &TestEventHandler{id: 1}
+	s.handler2 = &TestEventHandler{id: 2}
+	s.handler3 = &TestEventHandler{id: 3}
+	s.event = &TestEvent{name: "event", payload: "event"}
+	s.event2 = &TestEvent{name: "event2", payload: "event2"}
 }
 
 func (s *EventDispatcherTestSuite) TestEventDispatcher_Register() {
@@ -90,7 +90,7 @@ func (s *EventDispatcherTestSuite) TestEventDispatcher_Register_WithSameHandler(
 }
 
 func (s *EventDispatcherTestSuite) TestEventDispatcher_Dispatch() {
-	eh := &EventHandlerMock[string]{}
+	eh := &EventHandlerMock{}
 	eh.On("Handle", mock.Anything).Times(1)
 
 	err := s.dispatcher.Register(s.event.GetName(), eh)

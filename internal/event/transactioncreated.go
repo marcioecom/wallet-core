@@ -2,29 +2,29 @@ package event
 
 import "time"
 
-type TransactionCreated[T any] struct {
+type TransactionCreated struct {
 	Name    string
-	Payload T
+	Payload any
 }
 
-func NewTransactionCreated[T any]() *TransactionCreated[T] {
-	return &TransactionCreated[T]{
+func NewTransactionCreated() *TransactionCreated {
+	return &TransactionCreated{
 		Name: "TransactionCreated",
 	}
 }
 
-func (t *TransactionCreated[T]) GetName() string {
+func (t *TransactionCreated) GetName() string {
 	return t.Name
 }
 
-func (t *TransactionCreated[T]) GetDateTime() time.Time {
+func (t *TransactionCreated) GetDateTime() time.Time {
 	return time.Now()
 }
 
-func (t *TransactionCreated[T]) GetPayload() T {
+func (t *TransactionCreated) GetPayload() any {
 	return t.Payload
 }
 
-func (t *TransactionCreated[T]) SetPayload(payload T) {
+func (t *TransactionCreated) SetPayload(payload any) {
 	t.Payload = payload
 }

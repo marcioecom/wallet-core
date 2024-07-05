@@ -19,15 +19,15 @@ type CreateTransactionOutputDTO struct {
 type CreateTransactionUseCase struct {
 	AccountGateway     gateway.AccountGateway
 	TransactionGateway gateway.TransactionGateway
-	EventDispatcher    events.EventDispatcher[*CreateTransactionOutputDTO]
-	TransactionCreated events.EventInterface[*CreateTransactionOutputDTO]
+	EventDispatcher    events.EventDispatcher
+	TransactionCreated events.EventInterface
 }
 
 func NewCreateTransactionUseCase(
 	transactionGateway gateway.TransactionGateway,
 	accountGateway gateway.AccountGateway,
-	eventDispatcher events.EventDispatcher[*CreateTransactionOutputDTO],
-	transactionCreated events.EventInterface[*CreateTransactionOutputDTO],
+	eventDispatcher events.EventDispatcher,
+	transactionCreated events.EventInterface,
 ) *CreateTransactionUseCase {
 	return &CreateTransactionUseCase{
 		AccountGateway:     accountGateway,

@@ -58,8 +58,8 @@ func TestCreateTransactionUseCase_Execute(t *testing.T) {
 		Amount:        100,
 	}
 
-	event := event.NewTransactionCreated[*CreateTransactionOutputDTO]()
-	dispatcher := events.NewEventDispatcher[*CreateTransactionOutputDTO]()
+	event := event.NewTransactionCreated()
+	dispatcher := events.NewEventDispatcher()
 
 	usecase := NewCreateTransactionUseCase(tm, am, dispatcher, event)
 	output, err := usecase.Execute(input)
