@@ -20,20 +20,15 @@ func NewTransactionHandler(createTransactionUseCase createtransaction.CreateTran
 func (h *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	var dto createtransaction.CreateTransactionInputDTO
 	if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		Respond(w, http.StatusBadRequest, err, nil)
 		return
 	}
 
-	output, err := h.createTransactionUseCase.Execute(dto)
+	output, err := h.createTransactionUseCase.Execute(r.Context(), dto)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		Respond(w, http.StatusBadRequest, err, nil)
 		return
 	}
 
-	if err = json.NewEncoder(w).Encode(output); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
+	Respond(w, http.StatusCreated, nil, output)
 }
