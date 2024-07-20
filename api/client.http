@@ -1,0 +1,26 @@
+# Create client
+POST http://localhost:8080/clients HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "John Doe 1",
+  "email": "jd@mail.com"
+}
+
+### Create account
+POST http://localhost:8080/accounts HTTP/1.1
+Content-Type: application/json
+
+{
+  "clientId": "2aa3c051-ce5a-4981-9ef7-440019c437b8"
+}
+
+### Create transaction
+POST http://localhost:8080/transactions HTTP/1.1
+Content-Type: application/json
+
+{
+  "accountFromId": "28d04059-2e7f-4446-9a0d-f25329413b53",
+  "accountToId": "1aaf3f8f-0212-40e3-8fac-433cdfdf0f17",
+  "amount": 100
+}
