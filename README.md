@@ -144,11 +144,3 @@ All endpoints accept and return JSON.
 ```bash
 go test ./...
 ```
-
----
-
-## GitHub About (suggested)
-
-**Description:** Digital wallet microservice in Go - Clean Architecture, MySQL, event-driven transactions
-
-**Topics:** `go` `golang` `clean-architecture` `microservice` `digital-wallet` `mysql` `rest-api` `unit-of-work` `event-driven` `docker`
